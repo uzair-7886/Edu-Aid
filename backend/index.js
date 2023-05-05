@@ -1,42 +1,37 @@
 const express = require('express')
 const path = require('path')
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
+const cors =require('cors')
+const connection=require('./db') //import connection function  from configured database from db.js
 
-
+//configuring express server
 const app = express()
 const port = 3001
 
-//this is the connection string to connect to mongodb atlas, defualt password set is "test123"
+connection();
 
-const connection_string = "mongodb+srv://test:test123@cluster0.crkepeb.mongodb.net/?retryWrites=true&w=majority"
-
-//mongoose.connect returns a promise
-mongoose.connect(connection_string, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-    .then(() => console.log('Connected to MongoDB Atlas'))
-    .catch((err) => console.log('Error connecting to MongoDB Atlas', err));
-    
+//middlewares
+app.use(cors()) //to resolve cross-origin resource sharing because client server is requesting from port 3000 and backend server is running on port 3001
+app.use(express.json()) //without it the server would receive json data as a string, it is used to parse it as a js object
+ 
  
 //defined the schema
-const userSchema = new mongoose.Schema({
-    name: String,
-    email: String
-});
+// const userSchema = new mongoose.Schema({
+//     name: String,
+//     email: String
+// });
 
-const User = mongoose.model('User', userSchema)
+// const User = mongoose.model('User', userSchema)
 
-const users = [
-    { name: 'Alice', email: 'alice@example.com' },
-    { name: 'Bob', email: 'bob@example.com' },
-    { name: 'Charlie', email: 'charlie@example.com' }
-];
+// const users = [
+//     { name: 'Alice', email: 'alice@example.com' },
+//     { name: 'Bob', email: 'bob@example.com' },
+//     { name: 'Charlie', email: 'charlie@example.com' }
+// ];
 
-User.create(users)
-    .then(() => console.log('Dummy data inserted successfully'))
-    .catch((err) => console.log('Error inserting dummy data', err));
-    
+// User.create(users)
+//     .then(() => console.log('Dummy data inserted successfully'))
+//     .catch((err) => console.log('Error inserting dummy data', err));   
 //to insert data we can also use <result>= await User.save() (it is also a promise that's why used await) 
 
 app.listen(port, () => {
