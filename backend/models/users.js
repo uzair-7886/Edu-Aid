@@ -17,16 +17,26 @@ userSchema.methods.authToken=function(){
     return token
 }
 
-const validation=(data)=>{
-    const schema={
-        firstName:Joi.string().required().label("First Name"),
-        lastName:Joi.string().required().label("Last Name"),
-        email:Joi.string().required().email().label("Email"),
-        password:new passwordComplexity().required().label("Password")
-    }
-    return schema.validate(data)
-}
+// const validation=(data)=>{
+//     const schema={
+//         firstName:Joi.string().required().label("First Name"),
+//         lastName:Joi.string().required().label("Last Name"),
+//         email:Joi.string().required().email().label("Email"),
+//         password:new passwordComplexity().required().label("Password")
+//     }
+//     return schema.validation(data)
+// }
+
+const validate = (data) => {
+	const schema = Joi.object({
+		firstName: Joi.string().required().label("First Name"),
+		lastName: Joi.string().required().label("Last Name"),
+		email: Joi.string().email().required().label("Email"),
+		password: passwordComplexity().required().label("Password"),
+	});
+	return schema.validate(data);
+};
 
 const User=mongoose.model('User',userSchema) //defined the model
 
-module.exports={User,validation} //exported the model and validation function
+module.exports={User,validate} //exported the model and validation function

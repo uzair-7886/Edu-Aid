@@ -1,12 +1,12 @@
 const register = require('express').Router()
-const { User, validation } = require('../models/users')
+const { User, validate} = require('../models/users')
 const bcrypt = require('bcrypt') //to hash the passwords
 
 // register = express()
 
 register.post('/', async (req, res) => {
     try {
-        const { error } = validation(req.body)//destructuring the returned error from validation function incase data is invalid
+        const { error } = validate(req.body)//destructuring the returned error from validation function incase data is invalid
         if (error) {
             return res.status(400).send({ message: error.details[0].message }) //400 for invalid request
         }
@@ -29,7 +29,8 @@ register.post('/', async (req, res) => {
         res.status(201).send({ message: "User registered successfully" })//201 indicates successful creation
 
     } catch (error) {
-        res.send({ message: "internal server error" }).status(500)//500 indicates server side error
+        console.log(error)
+        res.send({ message: "internal server error " }).status(500)//500 indicates server side error
     }
 })
 
