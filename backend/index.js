@@ -1,8 +1,10 @@
 const express = require('express')
-const path = require('path')
+// const path = require('path')
 // const mongoose = require('mongoose')
 const cors =require('cors')
 const connection=require('./db') //import connection function  from configured database from db.js
+const registerRoute=require('./routes/register')
+const loginRoute=require('./routes/login')
 
 //configuring express server
 const app = express()
@@ -13,8 +15,13 @@ connection();
 //middlewares
 app.use(cors()) //to resolve cross-origin resource sharing because client server is requesting from port 3000 and backend server is running on port 3001
 app.use(express.json()) //without it the server would receive json data as a string, it is used to parse it as a js object
- 
- 
+
+
+//routes
+app.use('/register',registerRoute)
+app.use('/login',loginRoute)
+
+
 //defined the schema
 // const userSchema = new mongoose.Schema({
 //     name: String,
