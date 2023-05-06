@@ -5,6 +5,7 @@ const bcrypt=require('bcrypt')
 
 login.post("/",async (req,res)=>{
     try {
+        // console.log("here")
         const {error}=validate(req.body)
         if(error){
             return res.status(400).send({message:error.details[0].message})
@@ -21,18 +22,22 @@ login.post("/",async (req,res)=>{
         }
 
         //if user is authenticated with correct email and password we return token
-        const token=User.authToken()
-
-        res.send({data:token,message:"Login successfully"}).status(200)
+        // console.log(user)
+        const token=user.authToken()
+        // console.log(token)
+        res.status(200).send({data:token,message:"Login successfully"})
+        // res.status(200).send(token)
 
 
     } catch (error) {
+        console.log(error)
         res.status(500).send({message:"internal server error"})
     }
 })
 
 const validate=(data)=>{
     //joi.object method is used to validate an object
+    // console.log("called validate")
    const schema=joi.object({
     email:joi.string().email().required().label("Email"),
     password:joi.string().required().label("Password")
