@@ -5,6 +5,8 @@ const cors =require('cors')
 const connection=require('./db') //import connection function  from configured database from db.js
 const registerRoute=require('./routes/register')
 const loginRoute=require('./routes/login')
+const dashboardRoute=require('./routes/dashboard')
+
 
 //configuring express server
 const app = express()
@@ -20,7 +22,7 @@ app.use(express.json()) //without it the server would receive json data as a str
 //routes
 app.use('/register',registerRoute)
 app.use('/login',loginRoute)
-
+app.use('/dashboard',dashboardRoute)
 
 //defined the schema
 // const userSchema = new mongoose.Schema({
