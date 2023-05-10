@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'
 import axios from 'axios'
-
+import Puzzle from '../puzzle/index'
 export default function Dashboard(props) {
 
   const [data,setData]=useState({
@@ -51,6 +51,7 @@ export default function Dashboard(props) {
       <h3>Last Name: {data.lastName}</h3>
       <h3>Email: {data.email}</h3>
       <button type='submit' onClick={handleLogout}>logout</button>
+      <Puzzle/>
     </div>
   )
 }
