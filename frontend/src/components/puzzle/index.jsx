@@ -1,100 +1,198 @@
-import React, { useRef, useState,useEffect } from "react";
-import Jimp from 'jimp'  //jimp is an image processing library in nodejs
-import image from './image.jpeg'
+import React, { useState, useEffect, useRef } from 'react';
+import './PuzzleGame.css';
 
+const PuzzleGame = ({ imageUrl }) => {
+  const [puzzlePieces, setPuzzlePieces] = useState([]);
+  const [framePieces, setFramePieces] = useState(Array.from({ length: 9 }));
+  const [isSolved, setIsSolved] = useState(false);
+  const canvasRef = useRef(null);
 
-// got help from this link for jimp : https://img.ly/blog/how-to-manipulate-an-image-with-jimp-in-react/
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
 
+    const image = new Image();
+    image.src = imageUrl;
+    image.onload = () => {
+      const pieceWidth = image.width / 3;
+      const pieceHeight = image.height / 3;
+      const pieces = [];
 
-function Puzzle() {
-//   const [image,setImage]=useState("./image.jpeg")
-    const [img,setImg]=useState(image)
-    const [imageBoxes,setImageBoxes]=useState([])
-    const [dataUrls,setDataUrls]=useState([]) //dataurls would contain the string format created throught jimp to embed the image directly into html image tag
+      for (let i = 0; i < 9; i++) {
+        const x = (i % 3) * pieceWidth;
+        const y = Math.floor(i / 3) * pieceHeight;
+        const piece = {
+          x,
+          y,
+          width: pieceWidth,
+          height: pieceHeight,
+          imageX: x,
+          imageY: y,
+          imageWidth: pieceWidth,
+          imageHeight: pieceHeight,
+          dragStartX: null,
+          dragStartY: null,
+          isDragging: false,
+          index: i,
+        };
+        pieces.push(piece);
+      }
 
-    const splitImage=async (image)=>{
-        const imageWidth=image.width;
-        const imageHeight=image.height;
-        // console.log(imageHeight,imageWidth);
-        const imageBoxess=[];
-        const boxWidth=imageWidth/3;
-        const boxHeight=imageHeight/3;
-        // console.log(boxHeight,boxWidth);
-        for(let i=0;i<3;i++){
-            for(let j=0;j<3;j++){
-                const box={
-                    x:boxWidth*i, //x,y coordinates of starting position of the splitted box
-                    y:boxHeight*j,
-                    width:boxWidth,
-                    height:boxHeight,
-                    image:image
-                }
-                imageBoxess.push(box);
-            }
-        }
-        // console.log(imageBoxess);
-        // setImageBoxes(imageBoxess);
-        return imageBoxess
+      setPuzzlePieces(pieces);
+      ctx.drawImage(image, 0, 0);
+    };
+  }, [imageUrl]);
+
+  function handleDragStart(e, index) {
+    const piece = puzzlePieces[index];
+    piece.dragStartX = e.clientX - piece.x;
+    piece.dragStartY = e.clientY - piece.y;
+    piece.isDragging = true;
+  }
+
+  function handleDragMove(e, index) {
+    if (puzzlePieces[index].isDragging) {
+      const piece = { ...puzzlePieces[index] };
+      piece.x = e.clientX - piece.dragStartX;
+      piece.y = e.clientY - piece.dragStartY;
+      setPuzzlePieces(prevPieces =>
+        prevPieces.map((p, i) => (i === index ? piece : p))
+      );
     }
+  }
 
-
-    const cropImage=async (imageBoxes)=>{
-        const croppedImages=[]
-        // console.log(imageBoxes.length)
-        for(let i=0;i<imageBoxes.length;i++){
-            const box=imageBoxes[i]
-            console.log(box.image)
-            const image=await Jimp.read("image.jpeg") //read original image
-            const croppedImage=image.crop(box.x,box.y,box.width,box.height)//https://www.tutorialspoint.com/how-to-crop-an-image-using-crop-function-in-node-jimp 
-            croppedImages.push(croppedImage)
-        }
-        // console.log(croppedImages.length)
-        return croppedImages;
+  function handleDragEnd(index) {
+    const piece = { ...puzzlePieces[index] };
+    piece.isDragging = false;
+    const frameIndex = getFrameIndex(piece);
+    if (frameIndex >= 0) {
+      setFramePieces(prevPieces =>
+        prevPieces.map((p, i) => (i === frameIndex ? piece : p))
+      );
+      const isPuzzleSolved = checkPuzzleSolved();
+      setIsSolved(isPuzzleSolved);
     }
+  }
 
-
-    const createDataUrls=async (croppedImages)=>{
-        const dataUrls=[]
-        // console.log(croppedImages.length)
-        for(let i=0;i<croppedImages.length;i++){
-            const croppedImage=croppedImages[i]
-            // console.log(croppedImage)
-            const dataUrl=await croppedImage.getBase64Async(Jimp.AUTO) //https://www.geeksforgeeks.org/how-to-convert-an-image-to-base64-encoding-in-node-js/
-            dataUrls.push(dataUrl)
-            // console.log(dataUrl)
-        }
-        return dataUrls;
+  function getFrameIndex(piece) {
+    const frameRect = canvasRef.current.getBoundingClientRect();
+    const pieceRect = {
+      left: piece.x,
+      top: piece.y,
+      right: piece.x + piece.width,
+      bottom: piece.y + piece.height,
+    };
+    if (
+      pieceRect.right >= frameRect.left &&
+      pieceRect.left <= frameRect.right &&
+      pieceRect.bottom >= frameRect.top &&
+      pieceRect.top <= frameRect.bottom
+    ) {
+      const xIndex = Math.floor((piece.x + piece.width / 2) / (frameRect.width / 3));
+      const yIndex = Math.floor((piece.y + piece.height / 2) / (frameRect.height / 3));
+      return yIndex * 3 + xIndex;
     }
+    return -1;
+  }
 
-useEffect(()=>{
-    const handleImageOnLoad =async ()=>{
-        // const toSplitImg=event.target;
-        const splitData =await splitImage(img);
-        // console.log(splitData)
-        // setImageBoxes(splitData)
-
-        // console.log(imageBoxes.length) //splits image and sets coordinate and  for each box in 
-        const croppedImages=await cropImage(splitData)
-        const dataUrls=await createDataUrls(croppedImages)
-        setDataUrls(dataUrls)
-        // console.log("here")
+  function checkPuzzleSolved() {
+    for (let i = 0; i < framePieces.length; i++) {
+      if (framePieces[i].index !== i) {
+        return false;
+      }
     }
-    handleImageOnLoad()
-},[])
-   
+    return true;
+  }
+
+  function handleReset() {
+    setFramePieces(Array.from({ length: 9 }));
+    setIsSolved(false);
+  }
 
   return (
-    <>
-        <p>this is a puzzle game</p>
-        <img src={img} alt="image" />
-        {/* <div>
-      {dataUrls.map((dataUrl, index) => (
-        <img key={index} src={dataUrl} alt={`Image ${index}`} />
-      ))} */}
-    {/* </div> */}
-    <p>{dataUrls[1]}</p>
-    </>
+    <div className="puzzle-game">
+      <canvas
+        className="puzzle-canvas"
+        ref={canvasRef}
+        width={300}
+        height={300}
+        onMouseDown={e => {
+          const index = puzzlePieces.findIndex(piece => {
+            const pieceRect = {
+              left: piece.x,
+              top: piece.y,
+              right: piece.x + piece.width,
+              bottom: piece.y + piece.height,
+            };
+            return (
+              e.clientX >= pieceRect.left &&
+              e.clientX <= pieceRect.right &&
+              e.clientY >= pieceRect.top &&
+              e.clientY <= pieceRect.bottom
+            );
+          });
+          if (index >= 0) {
+            handleDragStart(e, index);
+          }
+        }}
+        onMouseMove={e => {
+          for (let i = 0; i < puzzlePieces.length; i++) {
+            if (puzzlePieces[i].isDragging) {
+              handleDragMove(e, i);
+              break;
+            }
+          }
+        }}
+        onMouseUp={() => {
+          for (let i = 0; i < puzzlePieces.length; i++) {
+            if (puzzlePieces[i].isDragging) {
+              handleDragEnd(i);
+              break;
+            }
+          }
+        }}
+      />
+      {!isSolved && (
+        <div className="puzzle-frame">
+          {framePieces.map((piece, i) => (
+            <div
+              className="puzzle-frame-piece"
+              key={i}
+              style={{
+                left: `${(i % 3) * 100 / 3}%`,
+                top: `${Math.floor(i / 3) * 100 / 3}%`,
+                backgroundImage: `url(${imageUrl})`,
+                backgroundPosition: `-${piece.imageX}px -${piece.imageY}px`,
+                backgroundSize: `${canvasRef.current.width}px ${canvasRef.current.height}px`,
+              }}
+              onMouseDown={() => {
+                if (piece.index !== undefined) {
+                  const pieceIndex = puzzlePieces.findIndex(p => p.index === piece.index);
+                  if (pieceIndex >= 0) {
+                    const newPiece = { ...puzzlePieces[pieceIndex] };
+                    newPiece.imageX = piece.x;
+                    newPiece.imageY = piece.y;
+                    newPiece.imageWidth = piece.width;
+                    newPiece.imageHeight = piece.height;
+                    setPuzzlePieces(prevPieces =>
+                      prevPieces.map((p, i) => (i === pieceIndex ? newPiece : p))
+                    );
+                    setFramePieces(prevPieces =>
+                      prevPieces.map((p, i) => (i === piece.index ? {} : p))
+                    );
+                  }
+                }
+              }}
+            />
+          ))}
+        </div>
+      )}
+      {isSolved && <div className="puzzle-solved">Congratulations, you solved the puzzle!</div>}
+      <button className="puzzle-reset" onClick={handleReset}>
+        Reset
+      </button>
+    </div>
   );
-}
+};
 
-export default Puzzle;
+export default PuzzleGame;
