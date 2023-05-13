@@ -2,6 +2,8 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import {InfinitySpin} from "react-loader-spinner"
+import {ThreeCircles} from "react-loader-spinner"
 
 const Login = () => {
   const [data, setData] = useState({
@@ -9,7 +11,9 @@ const Login = () => {
     password: "",
   });
 
-  const [error, setError] = useState("error");
+  const [loading,setLoading]=useState(false)
+
+  const [error, setError] = useState("");
 
   //when any field changes it gets updated in the state (destructures currentTarget from event object and renaming it as 'input' for simplicity)
   // const handleChange =({currentTarget:input})=>{
@@ -25,15 +29,19 @@ const Login = () => {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     try {
+      setLoading(true)
       const url = "http://localhost:3001/login";
       const { data: res } = await axios.post(url, data);
       localStorage.setItem("token", res.data); //setItem takes two arguments key and value and saves the data (which is the token sent as response from the api) in the local storage of browser so that we may need it latter
       // console.log(localStorage.getItem("token"));
+      setLoading(false)
       window.location = "/dashboard";
       // console.log(res.message);
     } catch (error) {
       setError(error.response.data.message);
       console.log(error.response.data.message);
+      setLoading(false)
+      setError(error.response.data.message)
     }
   };
 
@@ -110,8 +118,23 @@ const Login = () => {
       </nav>
     </div>
 
-
-
+  {loading&&//<InfinitySpin 
+//   width='200'
+//   color="#4fa94d"
+// />
+<ThreeCircles
+  height="50"
+  width="50"
+  color="#1b854a"
+  wrapperStyle={{}}
+  wrapperClass=""
+  visible={true}
+  ariaLabel="three-circles-rotating"
+  outerCircleColor=""
+  innerCircleColor=""
+  middleCircleColor=""
+/>
+}  
     <div
       className={"d-flex d-xl-flex align-items-center align-items-xl-center"}
       style={{position:"absolute" ,width:"100%",height:"85%",backgroundColor:"aliceblue"}}
@@ -173,6 +196,7 @@ const Login = () => {
                         >
                           Login
                         </button>
+                        <p style={{color:'red',textAlign:'center'}}>{error}</p>
                         <hr/>
                         <br />
                       </form>
@@ -200,6 +224,9 @@ const Login = () => {
         </div>
       </div>
     </div>
+{/* <p>here</p> */}
+
+   
     </>
   );
 };
