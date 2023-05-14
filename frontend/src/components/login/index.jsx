@@ -2,8 +2,10 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import {InfinitySpin} from "react-loader-spinner"
-import {ThreeCircles} from "react-loader-spinner"
+import { DotLoaderOverlay } from "react-spinner-overlay";
+import React,{useEffect} from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Login = () => {
   const [data, setData] = useState({
@@ -45,6 +47,9 @@ const Login = () => {
     }
   };
 
+  useEffect(()=> {
+    AOS.init({duration : 600});
+  }, [])
   return (
     // <div>
     //     <h1>Login Page</h1>
@@ -55,6 +60,7 @@ const Login = () => {
     //         <button type="submit">Login</button>
     //     </form>
     // </div>
+
     <>
     <div>
       <nav
@@ -118,22 +124,13 @@ const Login = () => {
       </nav>
     </div>
 
-  {loading&&//<InfinitySpin 
-//   width='200'
-//   color="#4fa94d"
-// />
-<ThreeCircles
-  height="50"
-  width="50"
+  {loading&&
+  <DotLoaderOverlay
+  overlayColor="rgba(0, 0, 0, 0.7)"
   color="#1b854a"
-  wrapperStyle={{}}
-  wrapperClass=""
-  visible={true}
-  ariaLabel="three-circles-rotating"
-  outerCircleColor=""
-  innerCircleColor=""
-  middleCircleColor=""
-/>
+  size={20}
+  between={13}
+  />
 }  
     <div
       className={"d-flex d-xl-flex align-items-center align-items-xl-center"}
@@ -142,7 +139,8 @@ const Login = () => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-9 col-lg-6 col-xl-6">
-            <div className="card shadow-lg o-hidden border-0 my-5">
+            <div className="card shadow-lg o-hidden border-0 my-5"  data-aos='zoom-out'>
+
               <div className="card-body p-0">
                 <div className="row">
                   

@@ -1,4 +1,5 @@
 //SF Pro Font: https://developer.apple.com/fonts/
+import { hover } from "@testing-library/user-event/dist/hover";
 import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
 export default function HomeNavBar() {

@@ -1,16 +1,25 @@
+import React,{useEffect} from 'react';
 import adhd from "./adhd.png";
 import dyslexia from "./dyslexia.png";
 import visual from "./visual.png";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import { FaFacebookF ,FaGithub,FaGoogle,FaInstagram,FaLinkedinIn,FaTwitter,FaHome, FaEnvelope, FaPhone, FaPrint} from "react-icons/fa";
 
+
+import { FaFacebookF ,FaGithub,FaGoogle,FaInstagram,FaLinkedinIn,FaTwitter,FaHome, FaEnvelope, FaPhone, FaPrint} from "react-icons/fa";
 export default function HomeFeatures() {
+  useEffect(()=> {
+    AOS.init({duration : 1300});
+  }, [])
   return (
     <div id="tutorial" style={{paddingTop:"30px", backgroundColor:"aliceblue"}}>
-    <div className="container py-4 py-xl-5">
+
+     <div className="container py-4 py-xl-5">
       <div className="row mb-5">
         <div className="col-md-8 col-xl-6 text-center mx-auto">
-          <h2>Learning Plans</h2>
-          <p>
+          <h2 data-aos='zoom-out'>Learning Plans</h2>
+          <p data-aos='zoom-out-up'>
             Carefully catered plans for students with learning difficulties.
           </p>
         </div>
@@ -19,11 +28,11 @@ export default function HomeFeatures() {
         <div className="col">
           <div className="text-center d-flex flex-column align-items-center align-items-xl-center">
             <div className="bs-icon-lg bs-icon-rounded bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block mb-3 bs-icon">
-              <img src={adhd} alt="" />
+              <img src={adhd} alt="" data-aos='zoom-out-right'/>
             </div>
             <div className="px-3">
-              <h4>ADHD</h4>
-              <p>
+              <h4 data-aos='zoom-in-right'>ADHD</h4>
+              <p data-aos='zoom-out-right'>
                 Erat netus est hendrerit, nullam et quis ad cras porttitor
                 iaculis. Bibendum vulputate cras aenean.
               </p>
@@ -37,11 +46,12 @@ export default function HomeFeatures() {
                 style={{ width: "96px", height: "96px" }}
                 src={dyslexia}
                 alt=""
+                data-aos='zoom-out'
               />
             </div>
             <div className="px-3">
-              <h4>Dyslexia</h4>
-              <p>
+              <h4 data-aos='zoom-in'>Dyslexia</h4>
+              <p data-aos='zoom-out-up'>
                 Erat netus est hendrerit, nullam et quis ad cras porttitor
                 iaculis. Bibendum vulputate cras aenean.
               </p>
@@ -51,11 +61,11 @@ export default function HomeFeatures() {
         <div className="col">
           <div className="text-center d-flex flex-column align-items-center align-items-xl-center">
             <div className="bs-icon-lg bs-icon-rounded bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block mb-3 bs-icon">
-              <img src={visual} alt="" />
+              <img src={visual} alt="" data-aos='zoom-out-left'/>
             </div>
             <div className="px-3">
-              <h4>Visual Agnosia</h4>
-              <p>
+              <h4 data-aos='zoom-in-left'>Visual Agnosia</h4>
+              <p data-aos='zoom-out-left'>
                 Erat netus est hendrerit, nullam et quis ad cras porttitor
                 iaculis. Bibendum vulputate cras aenean.
               </p>
@@ -63,9 +73,10 @@ export default function HomeFeatures() {
           </div>
         </div>
       </div>
- 
-    </div>
-    <div style={{marginTop:"20px"}}>
+     </div>
+     
+     <div style={{marginTop:"20px"}}>
+
       <footer
           className="text-center text-lg-start text-dark"
           style={{backgroundColor:"#5cac81"}}
