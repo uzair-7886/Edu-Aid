@@ -1,0 +1,50 @@
+.puzzle-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .puzzle-canvas {
+    border: 1px solid #ccc;
+    cursor: move;
+  }
+  
+  .puzzle-frame {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .puzzle-frame-piece {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .puzzle-solved {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .puzzle-reset {
+    margin-top: 20px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .puzzle-reset:hover {
+    background-color: #0062cc;
+  }

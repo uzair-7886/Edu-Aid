@@ -60,7 +60,7 @@ const Login = () => {
     //         <button type="submit">Login</button>
     //     </form>
     // </div>
-    
+
     <>
     <div>
       <nav
@@ -140,6 +140,7 @@ const Login = () => {
         <div className="row justify-content-center">
           <div className="col-md-9 col-lg-6 col-xl-6">
             <div className="card shadow-lg o-hidden border-0 my-5"  data-aos='zoom-out'>
+
               <div className="card-body p-0">
                 <div className="row">
                   

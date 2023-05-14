@@ -4,6 +4,8 @@ import dyslexia from "./dyslexia.png";
 import visual from "./visual.png";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { FaFacebookF ,FaGithub,FaGoogle,FaInstagram,FaLinkedinIn,FaTwitter,FaHome, FaEnvelope, FaPhone, FaPrint} from "react-icons/fa";
+
 
 import { FaFacebookF ,FaGithub,FaGoogle,FaInstagram,FaLinkedinIn,FaTwitter,FaHome, FaEnvelope, FaPhone, FaPrint} from "react-icons/fa";
 export default function HomeFeatures() {
@@ -12,6 +14,7 @@ export default function HomeFeatures() {
   }, [])
   return (
     <div id="tutorial" style={{paddingTop:"30px", backgroundColor:"aliceblue"}}>
+
      <div className="container py-4 py-xl-5">
       <div className="row mb-5">
         <div className="col-md-8 col-xl-6 text-center mx-auto">
@@ -73,6 +76,7 @@ export default function HomeFeatures() {
      </div>
      
      <div style={{marginTop:"20px"}}>
+
       <footer
           className="text-center text-lg-start text-dark"
           style={{backgroundColor:"#5cac81"}}
