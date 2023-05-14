@@ -1,4 +1,5 @@
 //SF Pro Font: https://developer.apple.com/fonts/
+import { hover } from "@testing-library/user-event/dist/hover";
 import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
 export default function HomeNavBar() {
@@ -7,18 +8,19 @@ export default function HomeNavBar() {
     <div>
       <nav
         className="navbar navbar-light navbar-expand-md py-3"
-        style={{ fontSize: "20px" }}
+        style={{ fontSize: "20px", backgroundColor: "#1b854a"}}
       >
         <div className="container">
-          <a className="navbar-brand d-flex align-items-center" href="#">
+          <a className="navbar-brand d-flex align-items-center" style={{ color:"rgb(2, 53, 2)"}}>
             <span className="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">
               <svg
                 className="bi bi-bezier"
                 xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
+                width="2em"
+                height="2em"
                 fill="currentColor"
                 viewBox="0 0 16 16"
+                data-toggle="collapse"
               >
                 <path
                   fillRule="evenodd"
@@ -27,7 +29,8 @@ export default function HomeNavBar() {
                 <path d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z"></path>
               </svg>
             </span>
-            <span>EduAid</span>
+            <span
+            style={{fontSize: "30px" ,marginRight:"20px"}}>&nbsp;EduAid</span>
           </a>
           <button
             className="navbar-toggler"
@@ -37,32 +40,33 @@ export default function HomeNavBar() {
             <span className="visually-hidden">Toggle navigation</span>
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div id="navcol-1" className="collapse navbar-collapse show">
+          <div id="navcol-1" className="collapse navbar-collapse">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
-                <a className="nav-link active" href="#">
+                <a className="nav-link active " href=""
+                style={{textDecoration: "underline",fontWeight: "bold", fontSize:"23px" ,color:"aliceblue",marginLeft:"16px"}}>
                   Home
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <a className="nav-link" href="" style={{fontSize:"23px" ,color:"aliceblue",marginLeft:"16px"}}>
                   Tutorial
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <a className="nav-link" href="" style={{fontSize:"23px" ,color:"aliceblue",marginLeft:"16px"}}>
                   About
                 </a>
               </li>
             </ul>
             <Link to="/registration">
-              <button className="btn btn-primary" type="button">
+              <button /*className="btn btn-primary"*/className={styles.sign_up_button} type="button">
                 Sign Up
               </button>
             </Link>
             <Link to="/login">
               <button
-                className="btn btn-primary"
+                className={styles.login_button}
                 type="button"
                 style={{ marginLeft: "25px" }}
               >
