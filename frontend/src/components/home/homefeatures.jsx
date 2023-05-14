@@ -6,8 +6,6 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { FaFacebookF ,FaGithub,FaGoogle,FaInstagram,FaLinkedinIn,FaTwitter,FaHome, FaEnvelope, FaPhone, FaPrint} from "react-icons/fa";
 
-
-import { FaFacebookF ,FaGithub,FaGoogle,FaInstagram,FaLinkedinIn,FaTwitter,FaHome, FaEnvelope, FaPhone, FaPrint} from "react-icons/fa";
 export default function HomeFeatures() {
   useEffect(()=> {
     AOS.init({duration : 1300});
