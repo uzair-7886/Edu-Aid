@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt') //to hash the passwords
 
 register.post('/', async (req, res) => {
     try {
+        console.log(req.body)
         const { error } = validate(req.body)//destructuring the returned error from validation function incase data is invalid
         if (error) {
             return res.status(400).send({ message: error.details[0].message }) //400 for invalid request
