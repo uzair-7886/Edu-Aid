@@ -6,6 +6,7 @@ const connection=require('./db') //import connection function  from configured d
 const registerRoute=require('./routes/register')
 const loginRoute=require('./routes/login')
 const dashboardRoute=require('./routes/dashboard')
+const lplans =require('./routes/lplans')
 
 
 //configuring express server
@@ -23,6 +24,7 @@ app.use(express.json()) //without it the server would receive json data as a str
 app.use('/register',registerRoute)
 app.use('/login',loginRoute)
 app.use('/dashboard',dashboardRoute)
+app.use('/lplans',lplans)
 
 //defined the schema
 // const userSchema = new mongoose.Schema({

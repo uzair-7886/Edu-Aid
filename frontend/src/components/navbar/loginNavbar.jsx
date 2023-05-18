@@ -1,7 +1,5 @@
-//SF Pro Font: https://developer.apple.com/fonts/
-import { hover } from "@testing-library/user-event/dist/hover";
-import styles from "./styles.module.css";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const styling = {
   active: {
@@ -18,8 +16,7 @@ const styling = {
   },
 };
 
-export default function HomeNavBar() {
-  const id = styles.navbar;
+export default function LoginNavbar(props) {
   return (
     <div>
       <nav
@@ -48,7 +45,7 @@ export default function HomeNavBar() {
                 <path d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z"></path>
               </svg>
             </span>
-            <span style={{ fontSize: "30px", marginRight: "20px" }}>
+            <span style={{ fontSize: "30px", marginRight: "22px" }}>
               &nbsp;EduAid
             </span>
           </a>
@@ -64,7 +61,7 @@ export default function HomeNavBar() {
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
                 <Link to="/" style={{ textDecoration: "none" }}>
-                  <a className="nav-link" style={styling.active}>
+                  <a className="nav-link" style={styling.non_active}>
                     Home
                   </a>
                 </Link>
@@ -76,7 +73,6 @@ export default function HomeNavBar() {
                   </a>
                 </Link>
               </li>
-
               <li className="nav-item">
                 <Link to="/" style={{ textDecoration: "none" }}>
                   <a className="nav-link" style={styling.non_active}>
@@ -85,25 +81,9 @@ export default function HomeNavBar() {
                 </Link>
               </li>
             </ul>
-            <Link to="/registration">
-              <button
-                /*className="btn btn-primary"*/ className={
-                  styles.sign_up_button
-                }
-                type="button"
-              >
-                Sign Up
-              </button>
-            </Link>
-            <Link to="/login">
-              <button
-                className={styles.login_button}
-                type="button"
-                style={{ marginLeft: "25px" }}
-              >
-                Login
-              </button>
-            </Link>
+            <a className="nav-link" style={styling.active}>
+              {props.string}
+            </a>
           </div>
         </div>
       </nav>
